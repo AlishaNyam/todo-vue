@@ -106,14 +106,22 @@ export const store = new Vuex.Store({
       })
     },
     updateTodo(context, todo) {
-      setTimeout(() => {
+      db.collection('todos').doc(todo.id).set({
+        id: todo.id,
+        title: todo.title,
+        completed: todo.completed,
+        timestamp: new Date(),
+      })
+      .then(() => {
         context.commit('updateTodo', todo)
-      }, 100)
+      })
     },
+
     deleteTodo(context, id) {
-      setTimeout(() => {
-        context.commit('deleteTodo', id)
-      }, 100)
+      db.collection('todos').doc(id).delete()
+        .then(() => {
+          context.commit('deleteTodo', id)
+        })
     },
     checkAll(context, checked) {
       setTimeout(() => {
